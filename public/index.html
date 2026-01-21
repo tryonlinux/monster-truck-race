@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Monster Truck Dash</title>
+  <meta name="description" content="Monster Truck Dash: a fast, kid-friendly racing game where you dodge muddy puddles and battle a goofy CPU." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://mtruck.tryonlinux.com/" />
+  <meta property="og:title" content="Monster Truck Dash" />
+  <meta property="og:description" content="A fast, kid-friendly monster truck race where you dodge muddy puddles and battle a goofy CPU." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mtruck.tryonlinux.com/" />
+  <meta property="og:image" content="https://mtruck.tryonlinux.com/og-image.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="gameShell" class="game-shell">
+    <header>
+      <div>
+        <h1>Monster Truck Dash</h1>
+        <div class="legend">
+          <span class="chip">Player: A / D or ◀︎ ▶︎</span>
+          <span class="chip">Dodge puddles</span>
+          <span class="chip">Race to the finish line</span>
+        </div>
+      </div>
+      <div class="controls">
+        <label>Player Color 1
+          <input id="colorOne" type="color" value="#ff595e" />
+        </label>
+        <label>Player Color 2
+          <input id="colorTwo" type="color" value="#1982c4" />
+        </label>
+        <button id="startBtn">Start Race</button>
+      </div>
+    </header>
+
+    <div class="hud">
+      <div>Player speed: <span id="playerSpeed">0</span> km/h</div>
+      <div>CPU speed: <span id="cpuSpeed">0</span> km/h</div>
+      <div>Lead: <span id="distance">Tied</span></div>
+    </div>
+
+    <div class="road-wrap">
+      <canvas id="roadCanvas"></canvas>
+      <div id="truckLayer" class="truck-layer">
+        <div id="cpuTruck" class="truck"></div>
+        <div id="playerTruck" class="truck"></div>
+      </div>
+      <div class="touch-controls" id="touchControls" aria-hidden="true">
+        <button class="pad left" data-dir="left" aria-label="Move left">◀</button>
+        <button class="pad right" data-dir="right" aria-label="Move right">▶</button>
+      </div>
+      <div class="touch-actions" id="touchActions" aria-hidden="true">
+        <button class="action-button" data-action="pause" aria-label="Pause">P</button>
+        <button class="action-button" data-action="reset" aria-label="Reset">R</button>
+      </div>
+      <div id="overlay" class="overlay active">
+        <div class="overlay-card">
+          <h2>Ready to rumble?</h2>
+          <p>Pick two colors for your truck. Use A/D or the arrow keys to weave left and right. Race down the track and dodge puddles that slow you down.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

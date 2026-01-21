@@ -1,0 +1,318 @@
+:root {
+  --bg: #0f1a1f;
+  --panel: #16262d;
+  --road-dark: #2b2f36;
+  --road-light: #3a3f49;
+  --grass: #2e6b3a;
+  --accent: #ffb703;
+  --danger: #e63946;
+  --text: #f4f1ed;
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Fredoka", "Trebuchet MS", Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, #1b2d36, #0f1a1f 60%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-shell {
+  width: min(980px, 100%);
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(22, 38, 45, 0.95), rgba(13, 21, 25, 0.98));
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-shell.is-playing {
+  padding: 0;
+  border-radius: 0;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 2.5vw, 2.3rem);
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px 18px;
+  align-items: center;
+  background: rgba(15, 25, 29, 0.8);
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.controls label {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.controls input[type="color"] {
+  width: 56px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+.controls button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: #1d1a12;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+.controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(255, 183, 3, 0.25);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0 6px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.road-wrap {
+  position: relative;
+  flex: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #3c423b 0%, #1d231f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  --truck-scale: 1;
+}
+
+.game-shell.is-playing header,
+.game-shell.is-playing .hud {
+  display: none;
+}
+
+.game-shell.is-playing .road-wrap {
+  border-radius: 0;
+  border: none;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+  touch-action: none;
+}
+
+.truck-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.truck {
+  position: absolute;
+  width: calc(110px * var(--truck-scale));
+  height: calc(170px * var(--truck-scale));
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s linear;
+}
+
+.truck svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes tread-move {
+  from {
+    transform: translateY(-16px);
+  }
+  to {
+    transform: translateY(16px);
+  }
+}
+
+.game-shell.is-playing .truck svg .wheel-tread {
+  animation: tread-move 0.35s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 12, 14, 0.75);
+  color: var(--text);
+  text-align: center;
+  padding: 24px;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.overlay.active {
+  opacity: 1;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay-card {
+  background: rgba(15, 25, 29, 0.95);
+  border-radius: 20px;
+  padding: 20px 24px;
+  max-width: 420px;
+  box-shadow: 0 16px 30px var(--shadow);
+}
+
+.overlay-card h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.overlay-card p {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.touch-controls {
+  position: absolute;
+  left: 18px;
+  bottom: 24px;
+  display: none;
+  grid-template-columns: repeat(2, 44px);
+  gap: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.touch .touch-controls {
+  display: grid;
+}
+
+.touch-controls .pad {
+  border: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 10px 20px var(--shadow);
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.touch-actions {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 2;
+}
+
+.touch .touch-actions {
+  display: flex;
+}
+
+.action-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1a1a1a;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 20px var(--shadow);
+  touch-action: manipulation;
+}
+
+@media (max-width: 700px) {
+  header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .controls button {
+    grid-column: span 2;
+  }
+
+  .hud {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .road-wrap {
+    min-height: 420px;
+  }
+}

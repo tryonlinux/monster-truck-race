@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mtruck.tryonlinux.com/sitemap.xml
